@@ -5,6 +5,8 @@ This contains a helper function for loading and saving CSV files.
 
 """
 import csv
+import questionary
+from pathlib import Path
 
 
 def load_csv(csvpath):
@@ -28,3 +30,8 @@ def load_csv(csvpath):
         for row in csvreader:
             data.append(row)
     return data
+
+def save_csv(data):
+    with open("results.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(data)
