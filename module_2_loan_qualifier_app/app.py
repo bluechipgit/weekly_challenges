@@ -41,7 +41,8 @@ def load_bank_data():
 
 
 def get_applicant_info():
-    """Prompt dialog to get the applicant's financial information.
+    """
+    Prompt dialog to get the applicant's financial information.
 
     Returns:
         Returns the applicant's financial information.
@@ -108,10 +109,20 @@ def save_qualifying_loans(qualifying_loans):
 
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
+
+    Returns:
+        save_csv: A csv with the qualifying loans data saved to a location set by the user
     """
+    print("Bank |", "Max Loan Amount |", "Interest Rate")
+    for row in qualifying_loans:
+        max_loan_amount = row[1]
+        interest_rate = row[5]
+        print(row[0], "${:0,.2f}".format(int(max_loan_amount)), "{:.0%}".format(float(interest_rate)))
     confirmation = questionary.confirm("Would you like to save the results?").ask()
     if confirmation:
-        return save_csv(qualifying_loans)
+        csvpath = questionary.text("Enter output path for results csv").ask()
+        csvpath = Path(csvpath)
+        return save_csv(csvpath, qualifying_loans)
     else:
         print("Confirmation was no. Exiting")
 
@@ -129,8 +140,11 @@ def run():
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
 
-    # Save qualifying loans
-    save_qualifying_loans(qualifying_loans)
+    # Save qualifying loans if user has qualified loans
+    if qualifying_loans:
+        save_qualifying_loans(qualifying_loans)
+    else:
+        print("I'm sorry, you are not qualified for any loans at this time")
 
 
 if __name__ == "__main__":
