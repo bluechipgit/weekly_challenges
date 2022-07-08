@@ -113,11 +113,17 @@ def save_qualifying_loans(qualifying_loans):
     Returns:
         save_csv: A csv with the qualifying loans data saved to a location set by the user
     """
+    print("")
     print("Bank |", "Max Loan Amount |", "Interest Rate")
+    print ("")
+    # Display resutls of qualifying_loans
     for row in qualifying_loans:
         max_loan_amount = row[1]
         interest_rate = row[5]
-        print(row[0], "${:0,.2f}".format(int(max_loan_amount)), "{:.0%}".format(float(interest_rate)))
+        # Format varoables for currency and percent
+        print(row[0], "${:0,.2f}".format(int(max_loan_amount)), interest_rate + '%')
+    print ("")
+    # Gather user confirmation of saving output
     confirmation = questionary.confirm("Would you like to save the results?").ask()
     if confirmation:
         csvpath = questionary.text("Enter output path for results csv").ask()
@@ -140,7 +146,7 @@ def run():
         bank_data, credit_score, debt, income, loan_amount, home_value
     )
 
-    # Save qualifying loans if user has qualified loans
+    # Save qualifying loans if user has qualified loans. Exit if qualifying loans == none
     if qualifying_loans:
         save_qualifying_loans(qualifying_loans)
     else:
